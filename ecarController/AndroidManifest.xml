@@ -7,6 +7,7 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="15" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -16,16 +17,20 @@
         <activity
             android:name="es.unirioja.ecarcontroller.MainActivity"
             android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="es.unirioja.ecarcontroller.MapActivity"
+            android:label="@string/title_activity_map" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="es.unirioja.ecarcontroller.MapActivity"
-            android:label="@string/title_activity_map" >
-        </activity>
+
+        <uses-library
+            android:name="com.google.android.maps"
+            android:required="true" />
     </application>
 
 </manifest>
