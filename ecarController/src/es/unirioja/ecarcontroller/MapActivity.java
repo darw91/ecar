@@ -7,8 +7,10 @@ import java.util.Locale;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
 
+import android.content.Intent;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 public class MapActivity extends com.google.android.maps.MapActivity {
 	
@@ -18,7 +20,25 @@ public class MapActivity extends com.google.android.maps.MapActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.map);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		initializeMap();
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    switch (item.getItemId()) {
+	        case android.R.id.home:
+	            // This is called when the Home (Up) button is pressed
+	            // in the Action Bar.
+	            Intent parentActivityIntent = new Intent(this, MainActivity.class);
+	            parentActivityIntent.addFlags(
+	                    Intent.FLAG_ACTIVITY_CLEAR_TOP |
+	                    Intent.FLAG_ACTIVITY_NEW_TASK);
+	            startActivity(parentActivityIntent);
+	            finish();
+	            return true;
+	    }
+	    return super.onOptionsItemSelected(item);
 	}
 	
 	private void initializeMap() {

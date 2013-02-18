@@ -3,7 +3,7 @@
 
     <string name="app_name">eCar Controller</string>
     <string name="hello_world">Hello world!</string>
-    <string name="menu_settings">Ajustes</string>
+    <string name="menu_about">Sobre nosotros</string>
     <string name="title_activity_map">Mapa</string>
 
 </resources>
