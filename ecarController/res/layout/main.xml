@@ -4,11 +4,24 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity" >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <Button
+        android:id="@+id/btMonitorizar"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="@string/hello_world" />
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="40dp"
+        android:text="Monitorizar" />
+
+    <Button
+        android:id="@+id/btControlar"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:layout_below="@+id/btMonitorizar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="30dp"
+        android:text="Controlar" />
 
 </RelativeLayout>
