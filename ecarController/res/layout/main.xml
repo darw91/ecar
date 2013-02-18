@@ -1,27 +1,22 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center"
+    android:orientation="vertical"
     tools:context=".MainActivity" >
-
+    
     <Button
         android:id="@+id/btMonitorizar"
         android:layout_width="fill_parent"
         android:layout_height="100dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="50dp"
-        android:layout_marginTop="40dp"
-        android:text="Monitorizar" />
+        android:text="@string/monitorizar" />
 
     <Button
         android:id="@+id/btControlar"
         android:layout_width="fill_parent"
         android:layout_height="100dp"
-        android:layout_below="@+id/btMonitorizar"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="50dp"
         android:layout_marginTop="30dp"
-        android:text="Controlar" />
+        android:text="@string/controlar" />
 
-</RelativeLayout>
+</LinearLayout>

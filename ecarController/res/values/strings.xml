@@ -5,5 +5,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="menu_about">Sobre nosotros</string>
     <string name="title_activity_map">Mapa</string>
-
+    
+    <string name="controlar">Controlar</string>
+	<string name="monitorizar">Monitorizar</string>
 </resources>
