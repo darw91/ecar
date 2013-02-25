@@ -7,4 +7,6 @@
     
     <string name="controlar">Controlar</string>
 	<string name="monitorizar">Monitorizar</string>
+	
+	<string name="no_disponible">No disponible todavía</string>
 </resources>

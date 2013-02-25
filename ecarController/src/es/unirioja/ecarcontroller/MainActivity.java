@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
@@ -21,6 +22,14 @@ public class MainActivity extends Activity {
 			public void onClick(View v) {
 				Intent i = new Intent(v.getContext(), MapActivity.class);
 				startActivity(i);
+			}
+		});
+        
+        Button btControlar = (Button) findViewById(R.id.btControlar);
+        btControlar.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Toast.makeText(getApplicationContext(), getResources().getString(R.string.no_disponible), Toast.LENGTH_SHORT).show();
 			}
 		});
     }
