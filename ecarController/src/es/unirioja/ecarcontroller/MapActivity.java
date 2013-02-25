@@ -13,11 +13,7 @@ import es.unirioja.ecarcontroller.map.Position;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 public class MapActivity extends com.google.android.maps.MapActivity {
 
