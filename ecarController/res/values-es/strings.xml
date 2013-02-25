@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">eCar Controller</string>
+    <string name="menu_about">Sobre nosotros</string>
+    <string name="title_activity_map">Mapa</string>
+    
+    <string name="controlar">Controlar</string>
+	<string name="monitorizar">Monitorizar</string>
+</resources>

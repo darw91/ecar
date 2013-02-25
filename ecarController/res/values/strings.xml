@@ -2,10 +2,9 @@
 <resources>
 
     <string name="app_name">eCar Controller</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="menu_about">Sobre nosotros</string>
-    <string name="title_activity_map">Mapa</string>
+    <string name="menu_about">About us</string>
+    <string name="title_activity_map">Map</string>
     
-    <string name="controlar">Controlar</string>
-	<string name="monitorizar">Monitorizar</string>
+    <string name="controlar">Control</string>
+	<string name="monitorizar">Track</string>
 </resources>
