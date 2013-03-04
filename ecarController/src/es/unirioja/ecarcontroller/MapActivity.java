@@ -64,7 +64,7 @@ public class MapActivity extends com.google.android.maps.MapActivity {
 					});
 					
 					try {
-						Thread.sleep(2000);
+						Thread.sleep(500);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
