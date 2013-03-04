@@ -25,7 +25,8 @@
         </activity>
         <activity
             android:name="es.unirioja.ecarcontroller.MapActivity"
-            android:label="@string/title_activity_map" >
+            android:label="@string/title_activity_map"
+            android:screenOrientation="portrait">
         </activity>
 
         <uses-library

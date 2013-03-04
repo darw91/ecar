@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
@@ -17,7 +17,10 @@ import es.unirioja.ecarcontroller.map.MapOverlay;
 import es.unirioja.ecarcontroller.map.Position;
 
 public class MapActivity extends com.google.android.maps.MapActivity {
+	
 	private MapView map;
+	private TextView tvSpeed;
+	private TextView tvPosition;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +28,10 @@ public class MapActivity extends com.google.android.maps.MapActivity {
 		
 		setContentView(R.layout.map);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		tvSpeed = (TextView)findViewById(R.id.tvSpeed);
+		tvPosition = (TextView)findViewById(R.id.tvPosition);
+		
 		initializeMap();
 	}
 
@@ -68,15 +75,15 @@ public class MapActivity extends com.google.android.maps.MapActivity {
 							addOverlay(gp, getResources().getDrawable(R.drawable.marker));
 							
 							if (gpAnterior != null) {
-								Toast.makeText(getApplicationContext(),
-										String.format("Velocidad: %.2f km/h", 3.6*calculaVelocidad(gpAnterior, gp)),
-										Toast.LENGTH_SHORT).show();
+								tvSpeed.setText((int)(3.6*calculaDistancia(gpAnterior, gp)) + " km/h");
 							}
+							
+							tvPosition.setText(String.format("%.5f, %.5f", gp.getLatitudeE6()/1000000.0, gp.getLongitudeE6()/1000000.0));
 						}
 					});
 					
 					try {
-						Thread.sleep(1500);
+						Thread.sleep(1000);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -103,7 +110,7 @@ public class MapActivity extends com.google.android.maps.MapActivity {
 		mapOverlays.add(itemizedOverlay);
 	}
 	
-	private double calculaVelocidad(GeoPoint p1, GeoPoint p2) {
+	private double calculaDistancia(GeoPoint p1, GeoPoint p2) {
 		//int difLat = p2.getLatitudeE6() - p1.getLatitudeE6();
 		double dlong = (p2.getLongitudeE6() - p1.getLongitudeE6()) / 1000000.0;
 		double dvalue = (Math.sin(Math.toRadians(p1.getLatitudeE6() / 1000000.0)) * Math.sin(Math.toRadians(p2.getLatitudeE6() / 1000000.0)))

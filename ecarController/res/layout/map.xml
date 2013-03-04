@@ -2,8 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MapActivity"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    tools:context=".MapActivity" >
 
     <com.google.android.maps.MapView
         android:id="@+id/map"
@@ -12,83 +12,47 @@
         android:layout_weight="0.25"
         android:apiKey="0tOERKqBRrJtY0l7WPNyQUHbnVod7PGPzxe7EwQ"
         android:clickable="true"
-        android:enabled="true" /> 
-	
-	<!-- <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:layout_weight="0.25"
-        android:background="@drawable/background" /> -->
+        android:enabled="true" />
 
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
         android:layout_weight="0.75"
-        android:background="@drawable/background" >
+        android:background="@drawable/background"
+        android:baselineAligned="false"
+        android:orientation="horizontal" >
 
-        <TableLayout
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_weight="0.4"
+            android:layout_weight="0.3"
+            android:orientation="vertical"
             android:padding="10dp" >
 
-            <TableRow
-                android:id="@+id/tableRow1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.5" >
 
-                <ImageView
-                    android:id="@+id/ivPosition"
-                    android:layout_width="30dp"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/position" />
-
-                <TextView
-                    android:id="@+id/tvPosition"
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:gravity="center_vertical"
-                    android:text="TextView" />
-
-                <ImageView
-                    android:id="@+id/ivElevation"
-                    android:layout_width="30dp"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/elevation" />
-
-                <TextView
-                    android:id="@+id/tvElevation"
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:gravity="center_vertical"
-                    android:text="TextView" />
-
-            </TableRow>
-
-            <TableRow
-                android:id="@+id/tableRow2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-                
                 <ImageView
                     android:id="@+id/ivSpeed"
-                    android:layout_width="30dp"
+                    android:layout_width="40dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
                     android:src="@drawable/speed" />
 
                 <TextView
                     android:id="@+id/tvSpeed"
-                    android:layout_width="wrap_content"
+                    android:layout_width="60dp"
                     android:layout_height="fill_parent"
                     android:gravity="center_vertical"
-                    android:text="TextView" />
+                    android:text="@string/kmh" />
 
                 <ImageView
                     android:id="@+id/ivBattery"
-                    android:layout_width="30dp"
+                    android:layout_width="40dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
                     android:src="@drawable/battery" />
 
                 <TextView
@@ -96,17 +60,34 @@
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
                     android:gravity="center_vertical"
-                    android:text="TextView" />
-                
-            </TableRow>
-        </TableLayout>
+                    android:text="95%" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.7" >
+
+                <ImageView
+                    android:id="@+id/ivPosition"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/position" />
+
+                <TextView
+                    android:id="@+id/tvPosition"
+                    android:layout_width="wrap_content"
+                    android:layout_height="fill_parent"
+                    android:gravity="center_vertical" />
+            </LinearLayout>
+        </LinearLayout>
 
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="0.6" >
         </RelativeLayout>
-
     </LinearLayout>
 
 </LinearLayout>
