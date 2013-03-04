@@ -2,6 +2,12 @@ package es.unirioja.ecarcontroller;
 
 import java.util.List;
 
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.widget.Toast;
+
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
@@ -10,18 +16,13 @@ import com.google.android.maps.OverlayItem;
 import es.unirioja.ecarcontroller.map.MapOverlay;
 import es.unirioja.ecarcontroller.map.Position;
 
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.view.MenuItem;
-
 public class MapActivity extends com.google.android.maps.MapActivity {
-
 	private MapView map;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		setContentView(R.layout.map);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		initializeMap();
@@ -39,8 +40,10 @@ public class MapActivity extends com.google.android.maps.MapActivity {
 					Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(parentActivityIntent);
 			finish();
+			
 			return true;
 		}
+		
 		return super.onOptionsItemSelected(item);
 	}
 
@@ -50,21 +53,30 @@ public class MapActivity extends com.google.android.maps.MapActivity {
 		map.getController().setZoom(19);
 
 		Thread t = new Thread(new Runnable() {
-			
 			@Override
 			public void run() {
-				for (final double[] d : Position.GetPositionList()) {
+				List<GeoPoint> listado = Position.getPositionList();
+				
+				for (int i=0; i<listado.size(); i++) {
+					final GeoPoint gpAnterior = i == 0 ? null : listado.get(i-1);
+					final GeoPoint gp = listado.get(i);
+					
 					runOnUiThread(new Runnable() {
 						public void run() {
-							GeoPoint gp = new GeoPoint((int)(d[0]*1e6), (int)(d[1]*1e6));
 							map.getController().animateTo(gp);
 							
 							addOverlay(gp, getResources().getDrawable(R.drawable.marker));
+							
+							if (gpAnterior != null) {
+								Toast.makeText(getApplicationContext(),
+										String.format("Velocidad: %.2f km/h", 3.6*calculaVelocidad(gpAnterior, gp)),
+										Toast.LENGTH_SHORT).show();
+							}
 						}
 					});
 					
 					try {
-						Thread.sleep(500);
+						Thread.sleep(1500);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -89,5 +101,15 @@ public class MapActivity extends com.google.android.maps.MapActivity {
 
 		mapOverlays.clear();
 		mapOverlays.add(itemizedOverlay);
+	}
+	
+	private double calculaVelocidad(GeoPoint p1, GeoPoint p2) {
+		//int difLat = p2.getLatitudeE6() - p1.getLatitudeE6();
+		double dlong = (p2.getLongitudeE6() - p1.getLongitudeE6()) / 1000000.0;
+		double dvalue = (Math.sin(Math.toRadians(p1.getLatitudeE6() / 1000000.0)) * Math.sin(Math.toRadians(p2.getLatitudeE6() / 1000000.0)))
+		   + (Math.cos(Math.toRadians(p1.getLatitudeE6() / 1000000.0)) * Math.cos(Math.toRadians(p2.getLatitudeE6() / 1000000.0)) * Math.cos(Math.toRadians(dlong)));
+		double dd = Math.toDegrees(Math.acos(dvalue));
+		
+		return dd * 111302;
 	}
 }
