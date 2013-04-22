@@ -17,7 +17,10 @@ import org.xmlpull.v1.XmlSerializer;
 import com.google.android.maps.GeoPoint;
 
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -27,7 +30,7 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.util.Xml;
 
-public class CurrentLocationService extends Service implements LocationListener {
+public class UpdateService extends Service implements LocationListener {
 
 	public final static int SECONDS_UPDATE = 1;
 
@@ -70,8 +73,14 @@ public class CurrentLocationService extends Service implements LocationListener 
 	private static final String RIG_ATT = "derecho";
 	private static final String LEF_ATT = "izquierdo";
 	
-
+	private int nivelBateria;
 	
+	private BroadcastReceiver bateria = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			nivelBateria = intent.getIntExtra("level", 0);
+		}
+	};
 
 	/*
 	 * (non-Javadoc)
@@ -80,6 +89,7 @@ public class CurrentLocationService extends Service implements LocationListener 
 	public void onCreate() {
 		super.onCreate();
 		locationManager = (LocationManager)getSystemService(Service.LOCATION_SERVICE);
+		this.registerReceiver(this.bateria, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 		initializeLocationListeners();
 	}
 
@@ -282,7 +292,7 @@ public class CurrentLocationService extends Service implements LocationListener 
 			// Energía
 			serializer.startTag("", ENER_TAG);
 			serializer.startTag("", CHA_TAG);
-			serializer.text("");
+			serializer.text(nivelBateria + "");
 			serializer.endTag("", CHA_TAG);
 			serializer.startTag("", POT_TAG);
 			serializer.text("");

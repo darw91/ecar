@@ -42,7 +42,7 @@ public class HomeActivity extends Activity {
 	}
 	
 	private void handleConnectPressed() {
-		Intent serviceIntent = new Intent(this, CurrentLocationService.class);
+		Intent serviceIntent = new Intent(this, UpdateService.class);
 		serviceIntent.putExtra("ip", etIP.getText().toString());
 		startService(serviceIntent);
 		btConnect.setEnabled(false);
@@ -51,7 +51,7 @@ public class HomeActivity extends Activity {
 	}
 	
 	private void handleDisconnectPressed() {
-		Intent serviceIntent = new Intent(this, CurrentLocationService.class);
+		Intent serviceIntent = new Intent(this, UpdateService.class);
 		stopService(serviceIntent);
 		btDisconnect.setEnabled(false);
 		btConnect.setEnabled(true);
