@@ -5,9 +5,10 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="11"
         android:targetSdkVersion="15" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -26,12 +27,18 @@
         <activity
             android:name="es.unirioja.ecarcontroller.MapActivity"
             android:label="@string/title_activity_map"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
 
         <uses-library
             android:name="com.google.android.maps"
             android:required="true" />
+
+        <activity
+            android:name="es.unirioja.ecarcontroller.ControlActivity"
+            android:label="@string/title_activity_control"
+            android:screenOrientation="landscape" >
+        </activity>
     </application>
 
 </manifest>

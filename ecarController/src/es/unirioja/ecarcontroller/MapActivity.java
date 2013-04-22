@@ -5,7 +5,9 @@ import java.util.List;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.maps.GeoPoint;
@@ -19,8 +21,12 @@ import es.unirioja.ecarcontroller.map.Position;
 public class MapActivity extends com.google.android.maps.MapActivity {
 	
 	private MapView map;
+	
 	private TextView tvSpeed;
 	private TextView tvPosition;
+	private TextView tvBattery;
+	
+	private ImageView ivLights;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +37,17 @@ public class MapActivity extends com.google.android.maps.MapActivity {
 		
 		tvSpeed = (TextView)findViewById(R.id.tvSpeed);
 		tvPosition = (TextView)findViewById(R.id.tvPosition);
+		tvBattery = (TextView)findViewById(R.id.tvBattery);
+		ivLights = (ImageView)findViewById(R.id.ivLights);
 		
 		initializeMap();
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+		getMenuInflater().inflate(R.menu.map, menu);
+		return true;
 	}
 
 	@Override
@@ -47,8 +62,10 @@ public class MapActivity extends com.google.android.maps.MapActivity {
 					Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(parentActivityIntent);
 			finish();
+			break;
+		case R.id.menu_live:
 			
-			return true;
+			break;
 		}
 		
 		return super.onOptionsItemSelected(item);
@@ -95,7 +112,6 @@ public class MapActivity extends com.google.android.maps.MapActivity {
 
 	@Override
 	protected boolean isRouteDisplayed() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

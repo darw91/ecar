@@ -20,7 +20,7 @@ public class MainActivity extends Activity {
         btMonitorizar.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(v.getContext(), MapActivity.class);
+				Intent i = new Intent(getApplicationContext(), MapActivity.class);
 				startActivity(i);
 			}
 		});
@@ -29,6 +29,8 @@ public class MainActivity extends Activity {
         btControlar.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				Intent i = new Intent(getApplicationContext(), ControlActivity.class);
+				startActivity(i);
 				Toast.makeText(getApplicationContext(), getResources().getString(R.string.no_disponible), Toast.LENGTH_SHORT).show();
 			}
 		});

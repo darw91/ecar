@@ -7,25 +7,26 @@
 
     <com.google.android.maps.MapView
         android:id="@+id/map"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight="0.25"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="75"
         android:apiKey="0tOERKqBRrJtY0l7WPNyQUHbnVod7PGPzxe7EwQ"
         android:clickable="true"
         android:enabled="true" />
 
     <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="0.75"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="25"
         android:background="@drawable/background"
         android:baselineAligned="false"
+        android:gravity="center"
         android:orientation="horizontal" >
 
         <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="0.3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="60"
             android:orientation="vertical"
             android:padding="10dp" >
 
@@ -36,7 +37,7 @@
 
                 <ImageView
                     android:id="@+id/ivSpeed"
-                    android:layout_width="40dp"
+                    android:layout_width="30dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
                     android:src="@drawable/speed" />
@@ -50,7 +51,7 @@
 
                 <ImageView
                     android:id="@+id/ivBattery"
-                    android:layout_width="40dp"
+                    android:layout_width="30dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
                     android:src="@drawable/battery" />
@@ -70,7 +71,7 @@
 
                 <ImageView
                     android:id="@+id/ivPosition"
-                    android:layout_width="40dp"
+                    android:layout_width="30dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
                     android:src="@drawable/position" />
@@ -83,11 +84,14 @@
             </LinearLayout>
         </LinearLayout>
 
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="0.6" >
-        </RelativeLayout>
+        <ImageView
+            android:id="@+id/ivLights"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="40"
+            android:adjustViewBounds="true"
+            android:src="@drawable/coche_base" />
+
     </LinearLayout>
 
 </LinearLayout>

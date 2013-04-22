@@ -3,12 +3,15 @@
 
     <string name="app_name">eCar Controller</string>
     <string name="menu_about">About us</string>
-    <string name="title_activity_map">Map</string>
     
+    <!-- Track -->
+    <string name="title_activity_map">Map</string>
     <string name="controlar">Control</string>
-	<string name="monitorizar">Track</string>
-	
-	<string name="no_disponible">Not yet available</string>
-	
-	<string name="kmh">0 km/h</string>
+    <string name="monitorizar">Track</string>
+    <string name="no_disponible">Not yet available</string>
+    <string name="kmh">0 km/h</string>
+    <string name="en_directo">Live</string>
+    
+    <!-- Control -->
+    <string name="title_activity_control">Control</string>
 </resources>
