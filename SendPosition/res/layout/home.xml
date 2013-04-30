@@ -46,6 +46,72 @@
                     android:layout_height="wrap_content"
                     android:text="@string/disconnect" />
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center" >
+
+                    <ToggleButton
+                        android:id="@+id/tbPosicion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="60dp"
+                        android:drawableTop="@drawable/luces_posicion"
+                        android:text="ToggleButton" />
+
+                    <ToggleButton
+                        android:id="@+id/tbCortas"
+                        android:layout_width="wrap_content"
+                        android:layout_height="60dp"
+                        android:drawableTop="@drawable/luces_cortas"
+                        android:text="ToggleButton" />
+
+                    <ToggleButton
+                        android:id="@+id/tbLargas"
+                        android:layout_width="wrap_content"
+                        android:layout_height="60dp"
+                        android:drawableTop="@drawable/luces_largas"
+                        android:text="ToggleButton" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center" >
+
+                    <ToggleButton
+                        android:id="@+id/tbIzquierdo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="60dp"
+                        android:drawableTop="@drawable/intermitente_izquierdo"
+                        android:text="ToggleButton" />
+
+                    <ToggleButton
+                        android:id="@+id/tbDerecho"
+                        android:layout_width="wrap_content"
+                        android:layout_height="60dp"
+                        android:drawableTop="@drawable/intermitente_derecho"
+                        android:text="ToggleButton" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center" >
+
+                </LinearLayout>
+
+            </LinearLayout>
+
         </LinearLayout>
 
     </ScrollView>

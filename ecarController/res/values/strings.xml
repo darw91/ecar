@@ -11,6 +11,7 @@
     <string name="no_disponible">Not yet available</string>
     <string name="kmh">0 km/h</string>
     <string name="en_directo">Live</string>
+    <string name="estatica">Static</string>
     
     <!-- Control -->
     <string name="title_activity_control">Control</string>

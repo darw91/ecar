@@ -14,13 +14,10 @@ import java.util.TimerTask;
 
 import org.xmlpull.v1.XmlSerializer;
 
-import com.google.android.maps.GeoPoint;
-
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -37,6 +34,7 @@ public class UpdateService extends Service implements LocationListener {
 	private LocationManager locationManager;
 
 	private Location location;
+	private Location locationAnt;
 
 	private boolean gpsEnabled = false;
 	private boolean networkEnabled = false;
@@ -75,6 +73,12 @@ public class UpdateService extends Service implements LocationListener {
 	
 	private int nivelBateria;
 	
+	public static boolean posicion = false;
+	public static boolean cortas = false;
+	public static boolean largas = false;
+	public static boolean izquierda = false;
+	public static boolean derecha = false;
+	
 	private BroadcastReceiver bateria = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
@@ -89,7 +93,7 @@ public class UpdateService extends Service implements LocationListener {
 	public void onCreate() {
 		super.onCreate();
 		locationManager = (LocationManager)getSystemService(Service.LOCATION_SERVICE);
-		this.registerReceiver(this.bateria, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+		//this.registerReceiver(this.bateria, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 		initializeLocationListeners();
 	}
 
@@ -212,6 +216,7 @@ public class UpdateService extends Service implements LocationListener {
 
 	@Override
 	public void onLocationChanged(Location location) {
+		this.locationAnt = this.location;
 		this.location = location;
 	}
 
@@ -279,7 +284,7 @@ public class UpdateService extends Service implements LocationListener {
 			// Movimiento
 			serializer.startTag("", MOV_TAG);
 			serializer.startTag("", SPE_TAG);
-			serializer.text("");
+			serializer.text((int)(3.6*calculaDistancia(loc, locationAnt)) + "");
 			serializer.endTag("", SPE_TAG);
 			serializer.startTag("", ODO_TAG);
 			serializer.text("");
@@ -311,17 +316,17 @@ public class UpdateService extends Service implements LocationListener {
 			// Luces
 			serializer.startTag("", LIG_TAG);
 			serializer.startTag("", ILU_TAG);
-			serializer.attribute("", POS_ATT, "");
-			serializer.attribute("", DIP_ATT, "");
-			serializer.attribute("", BEA_ATT, "");
+			serializer.attribute("", POS_ATT, "" + posicion);
+			serializer.attribute("", DIP_ATT, "" + cortas);
+			serializer.attribute("", BEA_ATT, "" + largas);
 			serializer.endTag("", ILU_TAG);
 			serializer.startTag("", FOG_TAG);
 			serializer.attribute("", FRO_ATT, "");
 			serializer.attribute("", REA_ATT, "");
 			serializer.endTag("", FOG_TAG);
 			serializer.startTag("", IND_TAG);
-			serializer.attribute("", RIG_ATT, "");
-			serializer.attribute("", LEF_ATT, "");
+			serializer.attribute("", RIG_ATT, "" + derecha);
+			serializer.attribute("", LEF_ATT, "" + izquierda);
 			serializer.endTag("", IND_TAG);
 			serializer.endTag("", LIG_TAG);
 			
@@ -334,13 +339,14 @@ public class UpdateService extends Service implements LocationListener {
 		}
 	}
 	
-	private double calculaDistancia(GeoPoint p1, GeoPoint p2) {
-		//int difLat = p2.getLatitudeE6() - p1.getLatitudeE6();
-		double dlong = (p2.getLongitudeE6() - p1.getLongitudeE6()) / 1000000.0;
-		double dvalue = (Math.sin(Math.toRadians(p1.getLatitudeE6() / 1000000.0)) * Math.sin(Math.toRadians(p2.getLatitudeE6() / 1000000.0)))
-		   + (Math.cos(Math.toRadians(p1.getLatitudeE6() / 1000000.0)) * Math.cos(Math.toRadians(p2.getLatitudeE6() / 1000000.0)) * Math.cos(Math.toRadians(dlong)));
+	private double calculaDistancia(Location p1, Location p2) {
+		if (p1 == null || p2 == null)
+			return 0;
+		double dlong = (p2.getLongitude() - p1.getLongitude());
+		double dvalue = (Math.sin(Math.toRadians(p1.getLatitude())) * Math.sin(Math.toRadians(p2.getLatitude())))
+				+ (Math.cos(Math.toRadians(p1.getLatitude())) * Math.cos(Math.toRadians(p2.getLatitude())) * Math.cos(Math.toRadians(dlong)));
 		double dd = Math.toDegrees(Math.acos(dvalue));
-		
+
 		return dd * 111302;
 	}
 }

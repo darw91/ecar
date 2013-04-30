@@ -3,5 +3,11 @@
         android:id="@+id/menu_live"
         android:orderInCategory="100"
         android:showAsAction="never"
-        android:title="@string/en_directo"/>
+        android:title="@string/en_directo"
+        android:visible="false" />
+    <item
+        android:id="@+id/menu_static"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/estatica" />
 </menu>
