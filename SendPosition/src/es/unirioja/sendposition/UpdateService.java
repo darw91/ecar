@@ -9,8 +9,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Date;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import org.xmlpull.v1.XmlSerializer;
 
@@ -39,10 +37,8 @@ public class UpdateService extends Service implements LocationListener {
 	private boolean gpsEnabled = false;
 	private boolean networkEnabled = false;
 
-	private Timer timer = null;
-	
 	private URL url;
-	
+
 	private static final String INFO_TAG = "info_coche";
 	private static final String DATE_ATT = "date";
 	private static final String COORD_TAG = "coordenadas";
@@ -70,15 +66,17 @@ public class UpdateService extends Service implements LocationListener {
 	private static final String IND_TAG = "intermitentes";
 	private static final String RIG_ATT = "derecho";
 	private static final String LEF_ATT = "izquierdo";
-	
+
 	private int nivelBateria;
-	
+
 	public static boolean posicion = false;
 	public static boolean cortas = false;
 	public static boolean largas = false;
 	public static boolean izquierda = false;
 	public static boolean derecha = false;
 	
+	private boolean sigue = true;
+
 	private BroadcastReceiver bateria = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
@@ -93,7 +91,6 @@ public class UpdateService extends Service implements LocationListener {
 	public void onCreate() {
 		super.onCreate();
 		locationManager = (LocationManager)getSystemService(Service.LOCATION_SERVICE);
-		//this.registerReceiver(this.bateria, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 		initializeLocationListeners();
 	}
 
@@ -125,16 +122,41 @@ public class UpdateService extends Service implements LocationListener {
 	 * @see android.app.Service#onStartCommand(android.content.Intent, int, int)
 	 */
 	public int onStartCommand(Intent intent, int flags, int startId) {
+		sigue = true;
+		
 		try {
 			url = new URL(intent.getExtras().getString("ip"));
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
-		
-		if (timer != null)
-			timer.cancel();
-		timer = new Timer(true);
-		timer.schedule(createTimerTask(), 1000, SECONDS_UPDATE * 1000);
+
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				Looper.prepare();
+				while (sigue) {
+					// Check for internet connection and location services.
+					if (!networkEnabled) {
+						stopSelf();
+						return;
+					}
+					if (!gpsEnabled) {
+						stopSelf();
+						return;
+					}
+
+					location = getLastKnownLocation();
+					updatePosition(location);
+					
+					try {
+						Thread.sleep(SECONDS_UPDATE);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+				Looper.loop();
+			}
+		}).start();
 
 		return super.onStartCommand(intent, flags, startId);
 	}
@@ -144,37 +166,9 @@ public class UpdateService extends Service implements LocationListener {
 	 * @see android.app.Service#onDestroy()
 	 */
 	public void onDestroy() {
-		super.onDestroy();
-		timer.cancel();
-		timer.purge();
+		super.onDestroy();	
 		locationManager.removeUpdates(this);
-	}
-
-	/**
-	 * Instances a new timerTask to update location to iDigi.
-	 * 
-	 * @return The new timer task.
-	 */
-	private TimerTask createTimerTask() {
-		TimerTask task = new TimerTask() {
-
-			@Override
-			public void run() {
-				// Check for internet connection and location services.
-				if (!networkEnabled) {
-					stopSelf();
-					return;
-				}
-				if (!gpsEnabled) {
-					stopSelf();
-					return;
-				}
-
-				location = getLastKnownLocation();
-				updatePosition(location);
-			}
-		};
-		return task;
+		sigue = false;
 	}
 
 	/**
@@ -231,41 +225,45 @@ public class UpdateService extends Service implements LocationListener {
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
 	}
-	
+
 	class UploadDataTask extends AsyncTask<Location, Void, Void> {
 		@Override
 		protected Void doInBackground(Location... params) {
-			HttpURLConnection httpCon = null;
-			DataOutputStream dos = null;
-			
-			try {
-				httpCon = (HttpURLConnection) url.openConnection();
-				httpCon.setDoOutput(true);
-				httpCon.setDoInput(true);
-				httpCon.setRequestMethod("POST");
-				
-				String parameters = "xml=" + URLEncoder.encode(generateXML(params[0]), "UTF-8");
+			if (sigue) {
+				HttpURLConnection httpCon = null;
+				DataOutputStream dos = null;
 
-				httpCon.setRequestProperty("Content-Type", "application/x-www-form-urlencoded"); 
-				httpCon.setRequestProperty("charset", "UTF-8");
-				httpCon.setRequestProperty("Content-Length", "" + Integer.toString(parameters.getBytes().length));
-	
-				dos = new DataOutputStream(httpCon.getOutputStream());
-				dos.writeBytes(parameters);
-				dos.flush();
-				
-				new DataInputStream(httpCon.getInputStream());
-				
-				httpCon.disconnect();
-				
-			} catch (IOException e) {
-				e.printStackTrace();
+				try {
+					httpCon = (HttpURLConnection) url.openConnection();
+					httpCon.setDoOutput(true);
+					httpCon.setDoInput(true);
+					httpCon.setRequestMethod("POST");
+
+					String parameters = "xml=" + URLEncoder.encode(generateXML(), "UTF-8");
+
+					httpCon.setConnectTimeout(SECONDS_UPDATE * 950);
+					httpCon.setReadTimeout(SECONDS_UPDATE * 950);
+					httpCon.setRequestProperty("Content-Type", "application/x-www-form-urlencoded"); 
+					httpCon.setRequestProperty("charset", "UTF-8");
+					httpCon.setRequestProperty("Content-Length", "" + Integer.toString(parameters.getBytes().length));
+
+					dos = new DataOutputStream(httpCon.getOutputStream());
+					dos.writeBytes(parameters);
+					dos.flush();
+
+					new DataInputStream(httpCon.getInputStream());
+
+					httpCon.disconnect();
+
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 			return null;
 		}
 	}
-	
-	private String generateXML(Location loc) {
+
+	private String generateXML() {
 		XmlSerializer serializer = Xml.newSerializer();
 		StringWriter writer = new StringWriter();
 		try {
@@ -273,18 +271,18 @@ public class UpdateService extends Service implements LocationListener {
 			serializer.startDocument("UTF-8", true);
 			serializer.startTag("", INFO_TAG);
 			serializer.attribute("", DATE_ATT, new Date().toString());
-			
+
 			// Coordenadas
 			serializer.startTag("", COORD_TAG);
-			serializer.attribute("", LAT_ATT, String.valueOf(loc.getLatitude()));
-			serializer.attribute("", LON_ATT, String.valueOf(loc.getLongitude()));
-			serializer.attribute("", ALT_ATT, String.valueOf(loc.getAltitude()));
+			serializer.attribute("", LAT_ATT, String.valueOf(location.getLatitude()));
+			serializer.attribute("", LON_ATT, String.valueOf(location.getLongitude()));
+			serializer.attribute("", ALT_ATT, String.valueOf(location.getAltitude()));
 			serializer.endTag("", COORD_TAG);
-			
+
 			// Movimiento
 			serializer.startTag("", MOV_TAG);
 			serializer.startTag("", SPE_TAG);
-			serializer.text((int)(3.6*calculaDistancia(loc, locationAnt)) + "");
+			serializer.text((int)(3.6*calculaDistancia(location, locationAnt)) + "");
 			serializer.endTag("", SPE_TAG);
 			serializer.startTag("", ODO_TAG);
 			serializer.text("");
@@ -293,7 +291,7 @@ public class UpdateService extends Service implements LocationListener {
 			serializer.text("");
 			serializer.endTag("", DIR_TAG);
 			serializer.endTag("", MOV_TAG);
-			
+
 			// Energía
 			serializer.startTag("", ENER_TAG);
 			serializer.startTag("", CHA_TAG);
@@ -312,7 +310,7 @@ public class UpdateService extends Service implements LocationListener {
 			serializer.text("");
 			serializer.endTag("", VOL_TAG);
 			serializer.endTag("", ENER_TAG);
-			
+
 			// Luces
 			serializer.startTag("", LIG_TAG);
 			serializer.startTag("", ILU_TAG);
@@ -329,16 +327,18 @@ public class UpdateService extends Service implements LocationListener {
 			serializer.attribute("", LEF_ATT, "" + izquierda);
 			serializer.endTag("", IND_TAG);
 			serializer.endTag("", LIG_TAG);
-			
+
 			serializer.endTag("", INFO_TAG);
 			serializer.endDocument();
+
+			this.locationAnt = this.location;
 			return writer.toString();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
-	
+
 	private double calculaDistancia(Location p1, Location p2) {
 		if (p1 == null || p2 == null)
 			return 0;
