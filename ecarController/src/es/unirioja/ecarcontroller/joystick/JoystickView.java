@@ -70,7 +70,7 @@ public class JoystickView extends View {
 		int measuredHeight = measure(heightMeasureSpec);
 		int d = Math.min(measuredWidth, measuredHeight);
 
-		handleRadius = (int)(d * 0.25);
+		handleRadius = (int)(d * 0.20);
 		handleInnerBoundaries = handleRadius;
 
 		setMeasuredDimension(d, d);

@@ -1,7 +1,9 @@
 package es.unirioja.ecarcontroller;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.VideoView;
 import android.app.Activity;
 import android.content.Intent;
 
@@ -12,6 +14,13 @@ public class ControlActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.control);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+		
+		VideoView videoView = (VideoView) findViewById(R.id.video);
+
+		Uri path = Uri.parse("android.resource://es.unirioja.ecarcontroller/" + R.raw.coche);
+
+		videoView.setVideoURI(path);
+		videoView.start();
 	}
 	
 	@Override

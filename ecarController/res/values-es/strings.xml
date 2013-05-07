@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">eCar Controller</string>
+    
+    <!-- Track -->
+    <string name="title_activity_map">Mapa</string>
+    <string name="monitorizar">Monitorizar</string>
+    <string name="kmh">0 km/h</string>
+    <string name="en_directo">En directo</string>
+    <string name="estatica">Ruta estática</string>
+    
+    <!-- Control -->
+    <string name="title_activity_control">Controlar</string>
+</resources>

@@ -4,22 +4,25 @@
     android:layout_height="fill_parent"
     android:background="@drawable/background"
     android:gravity="center"
-    android:orientation="vertical"
+    android:orientation="horizontal"
+    android:padding="20dp"
     tools:context=".MainActivity" >
     
     <Button
         android:id="@+id/btMonitorizar"
-        android:layout_width="fill_parent"
-        android:layout_height="100dp"
-        android:layout_margin="30dp"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:layout_marginRight="20dp"
+        android:layout_weight="50"
         android:drawableLeft="@drawable/glass"
         android:text="@string/monitorizar" />
 
     <Button
         android:id="@+id/btControlar"
-        android:layout_width="fill_parent"
-        android:layout_height="100dp"
-        android:layout_margin="30dp"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:layout_marginLeft="20dp"
+        android:layout_weight="50"
         android:drawableLeft="@drawable/wheel"
         android:text="@string/title_activity_control" />
 
